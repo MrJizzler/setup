@@ -1,0 +1,28 @@
+---
+- name: "install essential packages"
+  package:
+    name:
+      - "nmap"
+      - "netcat"
+      - "flameshot"
+      - "python3"
+      - "python3-pip"
+      - "curl"
+      - "wget"
+      - "htop"
+      - "git"
+      - "httpie"
+      - "tree"
+  become: yes
+
+- name: "install oh-my-bash"
+  block:
+    - name: "run oh-my-bash script"
+      shell: timeout 10 bash -c "$(curl -fsSL https://raw.github.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+      ignore_errors: yes
+
+    - name: "set powerline as default"
+      lineinfile:
+        path: "~/.bashrc"
+        regexp: '^OSH_THEME'
+        line: "OSH_THEME=powerline"

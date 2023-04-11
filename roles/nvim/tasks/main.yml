@@ -1,0 +1,42 @@
+- name: "add neovim repo"
+  apt_repository:
+    repo: "ppa:neovim-ppa/stable"
+    state: present
+  become: true
+
+- name: "install nvchad requirements"
+  package:
+    name:
+      - "neovim"
+      - "ripgrep"
+      - "git"
+      - "npm"
+      - "python3-venv"
+    state: present
+  become: true
+
+- name: "create local fonts folder"
+  file:
+    path: "~/.fonts/"
+    state: "directory"
+    mode: '0755'
+
+- name: "download JetBrains Nerd Font"
+  unarchive:
+    src: "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/JetBrainsMono.zip"
+    dest: "~/.fonts/"
+    remote_src: yes
+
+- name: "update font-cache"
+  command: "fc-cache -fv"
+
+- name: "install nvchad"
+  git:
+    repo: "https://github.com/NvChad/NvChad"
+    dest: "~/.config/nvim"
+    depth: 1
+
+- name: "copy custom files"
+  copy:
+    src: "custom"
+    dest: "~/.config/nvim/lua/"

@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  connection: local
+  roles:
+    - essentials
+    - tmux
+    - nvim
+    - pentesting
